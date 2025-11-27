@@ -7,6 +7,7 @@ import numpy as np
 from preprocessor.RCPreprocessor import RCPreprocessor
 from inference.engine_loader import TRTInferenceEngine
 import datacollector.hw_control.drive as drive   # RC car servo control module
+import datacollector.hw_control.input_utils as input_utils
 
 
 ANGLE_LIST = [30, 60, 90, 120, 150]
@@ -57,7 +58,7 @@ def main():
             # ------------------------------------------------------
             # 0) 키 입력 처리 (모터 속도 & 긴급 조향)
             # ------------------------------------------------------
-            key = get_key_nonblock()
+            key = input_utils.get_key_nonblock()
             steering_overridden = False  # 이 프레임에서 수동 조향했는지 여부
 
             if key:
