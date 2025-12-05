@@ -6,8 +6,8 @@ import numpy as np
 
 from preprocessor.RCPreprocessor import RCPreprocessor
 from inference.engine_loader import TRTInferenceEngine
-import data-collector.hw_control.drive as drive   # RC car servo control module
-import data-collector.hw_control.input_utils as input_utils
+import datacollector.hw_control.drive as drive   # RC car servo control module
+import datacollector.hw_control.input_utils as input_utils
 
 
 ANGLE_LIST = [1, 40, 90, 120, 150]

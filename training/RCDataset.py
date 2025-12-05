@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     dataset = RCDataset(
         csv_filename="data_labels_updated.csv",
-        root="data-collector/dataset",
+        root="datacollector/dataset",
         preprocessor=preproc,
         augmentor=augment,
         split="train",
