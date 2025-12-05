@@ -10,7 +10,7 @@ class RCAugmentor:
         self.hflip_prob = hflip_prob
         self.brightness_delta = brightness_delta
         self.blur_prob = blur_prob
-        self.flip_map = {30:150, 60:120, 90:90, 120:60, 150:30}
+        self.flip_map = {1:150, 40:120, 90:90, 120:40, 150:1}
 
     def __call__(self, img_bgr: np.ndarray, angle: int):
         # 좌우 플립
