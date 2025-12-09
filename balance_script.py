@@ -13,7 +13,7 @@ DATASET_ROOT = "datacollector/dataset"
 
 # "up" なら少ないクラスを増やす（オーバーサンプリング）
 # "down" なら多いクラスを減らす（アンダーサンプリング）
-BALANCE_MODE = "up"   # "up" か "down" に変更
+BALANCE_MODE = "down"   # "up" か "down" に変更
 
 # True にすると画像ファイルも複製して増やす
 # False なら CSV の行だけ増やして、image_path は元のファイルを指したまま
