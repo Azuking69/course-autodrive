@@ -81,9 +81,8 @@ MOTOR_DIRECTION_PIN2  = 31   # L298N IN1
 SERVO_PWM_PIN         = 32   # 서보 PWM 핀
 
 # PWM 설정 값
-MOTOR_PWM_FREQUENCY   = 900  # DC 모터 PWM 주파수 (Hz)
+MOTOR_PWM_FREQUENCY   = 1000  # DC 모터 PWM 주파수 (Hz)
 SERVO_PWM_FREQUENCY   = 50    # 서보 PWM 주파수 (Hz)
-MIN_RUNNING_SPEED = 45   # 30〜40 の間で調整
 
 # 서보 제어 범위 (듀티 비율)
 SERVO_MIN_DC = 5.0            # 0도 근처 듀티(대략 값, 서보에 따라 조정 가능)
@@ -92,7 +91,7 @@ SERVO_STEPS  = [1, 40, 90, 120, 150]  # 사용 가능한 5단계 조향 각도
 SERVO_INDEX  = 2              # 초기 인덱스(90도, 중앙)
 
 # 모터 속도 및 제어 관련 상수
-motor_speed     = 60          # 기본 모터 속도 (0~100)
+motor_speed     = 50          # 기본 모터 속도 (0~100)
 MOTOR_STEP      = 10          # A/Z 키로 속도 변경 단위
 KEY_DELAY       = 0.04        # 키 입력 폴링 주기 (초)
 
@@ -102,15 +101,6 @@ STOP_DECAY_DELAY = 0.015      # 감속 단계 사이 딜레이
 
 # 모터 방향 상태 (None: 정지, "forward": 전진, "backward": 후진)
 current_direction = None
-
-def get_effective_pwm(speed: int) -> int:
-    """
-    motor_speed 값에서 실제 PWM 듀티를 계산.
-    0 이면 0, 그 외에는 MIN_RUNNING_SPEED 이상으로 올려준다.
-    """
-    if speed <= 0:
-        return 0
-    return max(MIN_RUNNING_SPEED, min(100, speed))
 
 
 # ================= GPIO INIT ====================
@@ -177,7 +167,7 @@ def control_motor(direction):
         GPIO.output(MOTOR_DIRECTION_PIN2, GPIO.LOW)
 
     # 설정된 속도로 PWM 출력
-    motor_pwm.ChangeDutyCycle(get_effective_pwm(motor_speed))
+    motor_pwm.ChangeDutyCycle(motor_speed)
     # 현재 방향 상태 기록
     current_direction = direction
 
@@ -267,16 +257,16 @@ def run_drive_control(stop_flag=None):
             elif key in ("a", "A"):
                 motor_speed = min(100, motor_speed + MOTOR_STEP)
                 print("[MOTOR] speed:", motor_speed)
-
+                
                 if current_direction is not None:
-                    motor_pwm.ChangeDutyCycle(get_effective_pwm(motor_speed))
+                    motor_pwm.ChangeDutyCycle(motor_speed)
 
             elif key in ("z", "Z"):
                 motor_speed = max(0, motor_speed - MOTOR_STEP)
                 print("[MOTOR] speed:", motor_speed)
-
+                
                 if current_direction is not None:
-                    motor_pwm.ChangeDutyCycle(get_effective_pwm(motor_speed))
+                    motor_pwm.ChangeDutyCycle(motor_speed)
             
             elif key in ("t", "T"):
                 smooth_stop()
