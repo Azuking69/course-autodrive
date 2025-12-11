@@ -81,7 +81,7 @@ MOTOR_DIRECTION_PIN2  = 31   # L298N IN1
 SERVO_PWM_PIN         = 32   # 서보 PWM 핀
 
 # PWM 설정 값
-MOTOR_PWM_FREQUENCY   = 1000  # DC 모터 PWM 주파수 (Hz)
+MOTOR_PWM_FREQUENCY   = 750  # DC 모터 PWM 주파수 (Hz)
 SERVO_PWM_FREQUENCY   = 50    # 서보 PWM 주파수 (Hz)
 
 # 서보 제어 범위 (듀티 비율)
