@@ -83,6 +83,7 @@ SERVO_PWM_PIN         = 32   # 서보 PWM 핀
 # PWM 설정 값
 MOTOR_PWM_FREQUENCY   = 700  # DC 모터 PWM 주파수 (Hz)
 SERVO_PWM_FREQUENCY   = 50    # 서보 PWM 주파수 (Hz)
+MIN_RUNNING_SPEED = 35   # 30〜40 の間で調整
 
 # 서보 제어 범위 (듀티 비율)
 SERVO_MIN_DC = 5.0            # 0도 근처 듀티(대략 값, 서보에 따라 조정 가능)
