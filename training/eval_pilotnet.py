@@ -8,20 +8,21 @@ from torch.utils.data import DataLoader
 from training.RCDataset import RCDataset
 from preprocessor.RCPreprocessor import RCPreprocessor
 from training.model import PilotNet
+import argparse
 
 
 def evaluate_one_model(model_path: str):
-    # 1. 設定（必要ならここだけ書き換え）
+    # ===== 1. 設定 =====
     csv_filename = "data_labels_balanced_clean.csv"
     dataset_root = "datacollector/dataset"
     batch_size = 128
-    split_ratio = 0.8   # train_pilotnet.py と同じ
+    split_ratio = 0.8   # train と一致させる
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"[INFO] device = {device}")
     print(f"[INFO] model_path = {model_path}")
 
-    # 2. Dataset / DataLoader（test だけ作る）
+    # ===== 2. Dataset / DataLoader =====
     preproc = RCPreprocessor(
         out_size=(200, 66),
         crop_top_ratio=0.4,
@@ -54,13 +55,13 @@ def evaluate_one_model(model_path: str):
         prefetch_factor=4,
     )
 
-    # 3. モデル読み込み
+    # ===== 3. モデル読み込み =====
     model = PilotNet(num_classes=num_classes, input_shape=(3, 66, 200)).to(device)
     state = torch.load(model_path, map_location=device)
     model.load_state_dict(state)
     model.eval()
 
-    # 4. 推論して予測と正解を全部集める
+    # ===== 4. 推論 =====
     all_preds = []
     all_labels = []
 
@@ -81,12 +82,12 @@ def evaluate_one_model(model_path: str):
     elapsed = time.time() - start
     print(f"[INFO] inference time = {elapsed:.2f}s")
 
-    # 5. Confusion Matrix
+    # ===== 5. Confusion Matrix =====
     conf_mat = np.zeros((num_classes, num_classes), dtype=np.int64)
     for t, p in zip(all_labels, all_preds):
         conf_mat[t, p] += 1
 
-    # 6. 指標計算（Accuracy / Precision / Recall / F1）
+    # ===== 6. Accuracy / Precision / Recall / F1 =====
     total = conf_mat.sum()
     correct = np.trace(conf_mat)
     accuracy = correct / total if total > 0 else 0.0
@@ -113,17 +114,26 @@ def evaluate_one_model(model_path: str):
     macro_f1 = float(np.mean(f1_list))
 
     print("\n=== Evaluation Result ===")
-    print(f"Accuracy      : {accuracy*100:.2f}%")
-    print(f"Macro Precision: {macro_precision*100:.2f}%")
-    print(f"Macro Recall   : {macro_recall*100:.2f}%")
-    print(f"Macro F1       : {macro_f1*100:.2f}%")
+    print(f"Accuracy       : {accuracy * 100:.2f}%")
+    print(f"Macro Precision: {macro_precision * 100:.2f}%")
+    print(f"Macro Recall   : {macro_recall * 100:.2f}%")
+    print(f"Macro F1       : {macro_f1 * 100:.2f}%")
     print("\nConfusion Matrix (row=true, col=pred):")
     print(conf_mat)
 
 
+# ===== argparse によるモデル指定 ====
 if __name__ == "__main__":
-    # ここを評価したいモデルに合わせて書き換える
-    MODEL_PATH = "models/pilotnet_steering_20251211_183119.pth"
-    if not os.path.exists(MODEL_PATH):
-        raise FileNotFoundError(MODEL_PATH)
-    evaluate_one_model(MODEL_PATH)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--model_path",
+        type=str,
+        required=True,
+        help="評価したい .pth モデルのパスを指定"
+    )
+    args = parser.parse_args()
+
+    if not os.path.exists(args.model_path):
+        raise FileNotFoundError(args.model_path)
+
+    evaluate_one_model(args.model_path)
