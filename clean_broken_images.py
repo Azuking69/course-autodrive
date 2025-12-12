@@ -2,7 +2,7 @@ import os
 import cv2
 import pandas as pd
 
-CSV_PATH = "datacollector/dataset/data_labels_balanced.csv"   # ← 今使ってるCSV
+CSV_PATH = "datacollector/dataset/data_labels_updated.csv"   # ← 今使ってるCSV
 DATASET_ROOT = "datacollector/dataset"
 NEW_CSV_PATH = "datacollector/dataset/data_labels_balanced_clean.csv"
 
