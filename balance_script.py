@@ -6,11 +6,11 @@ OUTPUT_CSV = "datacollector/dataset/data_labels_balanced.csv"
 
 # 目標比率（合計 = 1.0）
 target_ratio = {
-    1: 0.27,
-    40: 0.27,
-    90: 0.27,
-    120: 0.13,
-    150: 0.06
+    1: 0.26,
+    40: 0.26,
+    90: 0.26,
+    120: 0.14,
+    150: 0.08
 }
 
 df = pd.read_csv(INPUT_CSV)
