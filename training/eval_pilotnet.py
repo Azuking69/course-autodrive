@@ -13,7 +13,7 @@ import argparse
 
 def evaluate_one_model(model_path: str):
     # ===== 1. 設定 =====
-    csv_filename = "data_labels_balanced_clean.csv"
+    csv_filename = "data_labels_balanced.csv"
     dataset_root = "datacollector/dataset"
     batch_size = 128
     split_ratio = 0.8   # train と一致させる

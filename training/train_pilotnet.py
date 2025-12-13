@@ -18,7 +18,7 @@ def train():
     # =====================
     # 1. Hyperparameters
     # =====================
-    csv_filename = "data_labels_balanced_clean.csv"
+    csv_filename = "data_labels_balanced.csv"
     dataset_root = "datacollector/dataset"
     num_epochs = 20
     batch_size = 128
